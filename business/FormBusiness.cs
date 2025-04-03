@@ -23,25 +23,26 @@ namespace Business
         }
 
         // Método para obtener todos los roles como DTOs
-        public async Task<IEnumerable<RolUserDto>> GetAllForm()
+        public async Task<IEnumerable<FormDto>> GetAllForm()
         {
             try
             {
                 var forms = await _formData.GetAllAsync();
-                var formsDTO = new List<RolUserDto>();
+                var formsDto = new List<FormDto>();
 
                 foreach (var form in forms)
                 {
-                    formsDTO.Add(new RolUserDto
+                    formsDto.Add(new FormDto
                     {
                         Id = form.Id,
                         Name = form.Name,
-                        Form = form.Description
+                        Description = form.Description,
+                        
 
                     });
                 }
 
-                return formsDTO;
+                return formsDto;
             }
             catch (Exception ex)
             {
@@ -51,7 +52,7 @@ namespace Business
         }
 
         // Método para obtener un rol por ID como DTO
-        public async Task<RolUserDto> GetFormByIdAsync(int id)
+        public async Task<FormDto> GetFormByIdAsync(int id)
         {
             if (id <= 0)
             {
@@ -68,11 +69,11 @@ namespace Business
                     throw new EntityNotFoundException("Formulario", id);
                 }
 
-                return new RolUserDto
+                return new FormDto
                 {
                     Id = form.Id,
                     Name = form.Name,
-                    Form = form.Description
+                    Description = form.Description
 
                 };
             }
@@ -84,25 +85,25 @@ namespace Business
         }
 
         // Método para crear un formulario desde un DTO
-        public async Task<RolUserDto> CreateFormAsync(RolUserDto FormDto)
+        public async Task<FormDto> CreateFormAsync(FormDto FormDto)
         {
             try
             {
-                ValidateRol(FormDto);
+                ValidateForm(FormDto);
 
                 var form = new Form
                 {
                     Name = FormDto.Name,
-                    Description = FormDto.Form // Se agregó la descripción
+                    Description = FormDto.Description // Se agregó la descripción
                 };
 
                 var formCreado = await _formData.CreateAsync(form);
 
-                return new RolUserDto
+                return new FormDto
                 {
                     Id = formCreado.Id,
                     Name = formCreado.Name,
-                    Form = formCreado.Description // Se agregó la descripción
+                    Description = formCreado.Description // Se agregó la descripción
                 };
             }
             catch (Exception ex)
@@ -113,7 +114,7 @@ namespace Business
         }
 
         // Método para validar el DTO
-        private void ValidateRol(RolUserDto FormDto)
+        private void ValidateForm(FormDto FormDto)
         {
             if (FormDto == null)
             {
@@ -127,9 +128,37 @@ namespace Business
             }
         }
 
-        public void GetAllFormAsync()
+        // Método para mapear de Rol a RolDTO
+        private FormDto MapToDTO(Form Form)
         {
-            throw new NotImplementedException();
+            return new FormDto
+            {
+                Id = Form.Id,
+                Name = Form.Name,
+                Description = Form.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear de RolDTO a Rol
+        private Form MapToEntity(FormDto formDto)
+        {
+            return new Form
+            {
+                Id = formDto.Id,
+                Name = formDto.Name,
+                Description = formDto.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear una lista de Rol a una lista de RolDTO
+        private IEnumerable<FormDto> MapToDTOList(IEnumerable<Form> forms)
+        {
+            var FormDto = new List<FormDto>();
+            foreach (var form in forms)
+            {
+                FormDto.Add(MapToDTO(form));
+            }
+            return FormDto;
         }
     }
 }

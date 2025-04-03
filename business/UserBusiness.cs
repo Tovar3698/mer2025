@@ -27,16 +27,7 @@ namespace Business
             try
             {
                 var user = await _userData.GetAllAsync();
-                var userDto = new List<UserDto>();
-
-                foreach (var User in user)
-                {
-                    userDto.Add(new UserDto
-                    {
-                        Id = user.Id,
-                        Name = user.Name
-                    });
-                }
+                var userDto = MapToDTOList(user);
                 return userDto;
             }
             catch (Exception ex)
@@ -93,7 +84,7 @@ namespace Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo usuario: {UsuarioNombre}", UserDto?.UserName ?? "null");
+                _logger.LogError(ex, "Error al crear nuevo usuario: {UsuarioNombre}", UserDto?.UserDto);
                 throw new ExternalServiceException("Base de datos", "Error al crear el usuario", ex);
             }
         }
@@ -123,6 +114,36 @@ namespace Business
         public void GetAllUserAsync()
         {
             throw new NotImplementedException();
+        }        // Método para mapear de Rol a RolDTO
+        private UserDto MapToDTO(User User)
+        {
+            return new UserDto
+            {
+                Id = User.Id,
+                Name = User.Name,
+                Description = User.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear de RolDTO a Rol
+        private User MapToEntity(UserDto userDto)
+        {
+            return new User
+            {
+                Id = userDto.Id,
+                Name = userDto.Name,
+                Description = userDto.Description // Si existe en la entidad
+            };
+        }
+
+        private IEnumerable<UserDto> MapToDTOList(IEnumerable<User> users)
+        {
+            var UserDto = new List<UserDto>();
+            foreach (var user in users)
+            {
+                UserDto.Add(MapToDTO(user));
+            }
+            return UserDto;
         }
     }
 }

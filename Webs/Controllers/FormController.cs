@@ -41,7 +41,7 @@ namespace Web.Controllers
         {
             try
             {
-                var form = await _FormBusiness.GetAllFormsAsync();
+                var form = await _FormBusiness.GetAllForm();
                 return Ok(form);
             }
             catch (ExternalServiceException ex)
