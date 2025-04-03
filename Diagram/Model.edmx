@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="Model1TargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="UserSet" EntityType="Model1.User" />
+          <EntitySet Name="RolUserSet" EntityType="Model1.RolUser" />
+          <EntitySet Name="RolFormPermissionSet" EntityType="Model1.RolFormPermission" />
+          <EntitySet Name="permissionSet" EntityType="Model1.permission" />
+          <EntitySet Name="CitationSet" EntityType="Model1.Citation" />
+          <EntitySet Name="FormSet" EntityType="Model1.Form" />
+          <EntitySet Name="ModuleSet" EntityType="Model1.Module" />
+          <EntitySet Name="NotificationSet" EntityType="Model1.Notification" />
+          <EntitySet Name="PracticeSet" EntityType="Model1.Practice" />
+          <EntitySet Name="scheduleSet" EntityType="Model1.schedule" />
+          <EntitySet Name="FormModuleSet" EntityType="Model1.FormModule" />
+          <EntitySet Name="RolSet" EntityType="Model1.Rol" />
+          <EntitySet Name="RelatedPersonSet" EntityType="Model1.RelatedPerson" />
+          <EntitySet Name="InfoDoctorSet" EntityType="Model1.InfoDoctor" />
+          <EntitySet Name="TypeCitationSet" EntityType="Model1.TypeCitation" />
+          <EntitySet Name="AuditoLogSet1" EntityType="Model1.AuditoLog" />
+          <EntitySet Name="PersonSet" EntityType="Model1.Person" />
+          <AssociationSet Name="RelatedPersonPerson" Association="Model1.RelatedPersonPerson">
+            <End Role="RelatedPerson" EntitySet="RelatedPersonSet" />
+            <End Role="Person" EntitySet="PersonSet" />
+          </AssociationSet>
+          <AssociationSet Name="RelatedPersonUser" Association="Model1.RelatedPersonUser">
+            <End Role="RelatedPerson" EntitySet="RelatedPersonSet" />
+            <End Role="User" EntitySet="UserSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserRolUser" Association="Model1.UserRolUser">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="RolUser" EntitySet="RolUserSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserInfoDoctor" Association="Model1.UserInfoDoctor">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="InfoDoctor" EntitySet="InfoDoctorSet" />
+          </AssociationSet>
+          <AssociationSet Name="InfoDoctorschedule" Association="Model1.InfoDoctorschedule">
+            <End Role="InfoDoctor" EntitySet="InfoDoctorSet" />
+            <End Role="schedule" EntitySet="scheduleSet" />
+          </AssociationSet>
+          <AssociationSet Name="Practiceschedule" Association="Model1.Practiceschedule">
+            <End Role="schedule" EntitySet="scheduleSet" />
+            <End Role="Practice" EntitySet="PracticeSet" />
+          </AssociationSet>
+          <AssociationSet Name="PersonUser" Association="Model1.PersonUser">
+            <End Role="Person" EntitySet="PersonSet" />
+            <End Role="User" EntitySet="UserSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserCitation" Association="Model1.UserCitation">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Citation" EntitySet="CitationSet" />
+          </AssociationSet>
+          <AssociationSet Name="TypeCitationCitation" Association="Model1.TypeCitationCitation">
+            <End Role="Citation" EntitySet="CitationSet" />
+            <End Role="TypeCitation" EntitySet="TypeCitationSet" />
+          </AssociationSet>
+          <AssociationSet Name="ModuleFormModule" Association="Model1.ModuleFormModule">
+            <End Role="Module" EntitySet="ModuleSet" />
+            <End Role="FormModule" EntitySet="FormModuleSet" />
+          </AssociationSet>
+          <AssociationSet Name="FormFormModule" Association="Model1.FormFormModule">
+            <End Role="FormModule" EntitySet="FormModuleSet" />
+            <End Role="Form" EntitySet="FormSet" />
+          </AssociationSet>
+          <AssociationSet Name="permissionRolFormPermission" Association="Model1.permissionRolFormPermission">
+            <End Role="permission" EntitySet="permissionSet" />
+            <End Role="RolFormPermission" EntitySet="RolFormPermissionSet" />
+          </AssociationSet>
+          <AssociationSet Name="CitationNotification" Association="Model1.CitationNotification">
+            <End Role="Citation" EntitySet="CitationSet" />
+            <End Role="Notification" EntitySet="NotificationSet" />
+          </AssociationSet>
+          <AssociationSet Name="RolRolUser" Association="Model1.RolRolUser">
+            <End Role="Rol" EntitySet="RolSet" />
+            <End Role="RolUser" EntitySet="RolUserSet" />
+          </AssociationSet>
+          <AssociationSet Name="FormRolFormPermission" Association="Model1.FormRolFormPermission">
+            <End Role="Form" EntitySet="FormSet" />
+            <End Role="RolFormPermission" EntitySet="RolFormPermissionSet" />
+          </AssociationSet>
+          <AssociationSet Name="RolRolFormPermission" Association="Model1.RolRolFormPermission">
+            <End Role="RolFormPermission" EntitySet="RolFormPermissionSet" />
+            <End Role="Rol" EntitySet="RolSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="RelatedPerson" Relationship="Model1.RelatedPersonUser" FromRole="User" ToRole="RelatedPerson" />
+          <NavigationProperty Name="RolUser" Relationship="Model1.UserRolUser" FromRole="User" ToRole="RolUser" />
+          <NavigationProperty Name="InfoDoctor" Relationship="Model1.UserInfoDoctor" FromRole="User" ToRole="InfoDoctor" />
+          <NavigationProperty Name="Person" Relationship="Model1.PersonUser" FromRole="User" ToRole="Person" />
+          <NavigationProperty Name="Citation" Relationship="Model1.UserCitation" FromRole="User" ToRole="Citation" />
+          <Property Name="Email" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" />
+          <Property Name="AccountStatus" Type="String" Nullable="false" />
+          <Property Name="registrationData" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RolUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="User" Relationship="Model1.UserRolUser" FromRole="RolUser" ToRole="User" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rol" Relationship="Model1.RolRolUser" FromRole="RolUser" ToRole="Rol" />
+          <Property Name="RolId" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RolFormPermission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="permission" Relationship="Model1.permissionRolFormPermission" FromRole="RolFormPermission" ToRole="permission" />
+          <Property Name="permissionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Form" Relationship="Model1.FormRolFormPermission" FromRole="RolFormPermission" ToRole="Form" />
+          <Property Name="FormId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rol" Relationship="Model1.RolRolFormPermission" FromRole="RolFormPermission" ToRole="Rol" />
+          <Property Name="ModuleFormId" Type="String" Nullable="false" />
+          <Property Name="RolId" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="permission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="RolFormPermission" Relationship="Model1.permissionRolFormPermission" FromRole="permission" ToRole="RolFormPermission" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Citation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="User" Relationship="Model1.UserCitation" FromRole="Citation" ToRole="User" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TypeCitation" Relationship="Model1.TypeCitationCitation" FromRole="Citation" ToRole="TypeCitation" />
+          <NavigationProperty Name="Notification" Relationship="Model1.CitationNotification" FromRole="Citation" ToRole="Notification" />
+        </EntityType>
+        <EntityType Name="Form">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="FormModule" Relationship="Model1.FormFormModule" FromRole="Form" ToRole="FormModule" />
+          <NavigationProperty Name="RolFormPermission" Relationship="Model1.FormRolFormPermission" FromRole="Form" ToRole="RolFormPermission" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="Url" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Module">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="FormModule" Relationship="Model1.ModuleFormModule" FromRole="Module" ToRole="FormModule" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Citation" Relationship="Model1.CitationNotification" FromRole="Notification" ToRole="Citation" />
+          <Property Name="CitationId" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" />
+          <Property Name="dateShipment" Type="String" Nullable="false" />
+          <Property Name="StateNotification" Type="String" Nullable="false" />
+          <Property Name="TypeNotification" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Practice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="schedule" Relationship="Model1.Practiceschedule" FromRole="Practice" ToRole="schedule" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="IsDeleted" Type="String" Nullable="false" />
+          <Property Name="CreationDate" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="schedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="InfoDoctor" Relationship="Model1.InfoDoctorschedule" FromRole="schedule" ToRole="InfoDoctor" />
+          <Property Name="InfoDoctorId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Practice" Relationship="Model1.Practiceschedule" FromRole="schedule" ToRole="Practice" />
+          <Property Name="StarTime" Type="String" Nullable="false" />
+          <Property Name="StarEnd" Type="String" Nullable="false" />
+          <Property Name="CreationDate" Type="String" Nullable="false" />
+          <Property Name="IsDeletd" Type="String" Nullable="false" />
+          <Property Name="PracticeId" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FormModule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Module" Relationship="Model1.ModuleFormModule" FromRole="FormModule" ToRole="Module" />
+          <Property Name="ModuleId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Form" Relationship="Model1.FormFormModule" FromRole="FormModule" ToRole="Form" />
+          <Property Name="FormId" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="RolUser" Relationship="Model1.RolRolUser" FromRole="Rol" ToRole="RolUser" />
+          <NavigationProperty Name="RolFormPermission" Relationship="Model1.RolRolFormPermission" FromRole="Rol" ToRole="RolFormPermission" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RelatedPerson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Person" Relationship="Model1.RelatedPersonPerson" FromRole="RelatedPerson" ToRole="Person" />
+          <Property Name="UserId" Type="String" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Model1.RelatedPersonUser" FromRole="RelatedPerson" ToRole="User" />
+          <Property Name="typeRelation" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InfoDoctor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="User" Relationship="Model1.UserInfoDoctor" FromRole="InfoDoctor" ToRole="User" />
+          <NavigationProperty Name="schedule" Relationship="Model1.InfoDoctorschedule" FromRole="InfoDoctor" ToRole="schedule" />
+          <Property Name="specialty" Type="String" Nullable="false" />
+          <Property Name="RegistrationData" Type="String" Nullable="false" />
+          <Property Name="IdUser" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TypeCitation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Citation" Relationship="Model1.TypeCitationCitation" FromRole="TypeCitation" ToRole="Citation" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" />
+          <Property Name="Frequency" Type="String" Nullable="false" />
+          <Property Name="TotalDuration" Type="String" Nullable="false" />
+          <Property Name="Property5" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AuditoLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TableName" Type="String" Nullable="false" />
+          <Property Name="AffectedId" Type="String" Nullable="false" />
+          <Property Name="PropertyName" Type="String" Nullable="false" />
+          <Property Name="Oldvalue" Type="String" Nullable="false" />
+          <Property Name="NewValue" Type="String" Nullable="false" />
+          <Property Name="Action" Type="String" Nullable="false" />
+          <Property Name="Timestap" Type="String" Nullable="false" />
+          <Property Name="UserId" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="RelatedPerson" Relationship="Model1.RelatedPersonPerson" FromRole="Person" ToRole="RelatedPerson" />
+          <NavigationProperty Name="User" Relationship="Model1.PersonUser" FromRole="Person" ToRole="User" />
+          <Property Name="FirstNama" Type="String" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" />
+          <Property Name="Document_Type" Type="String" Nullable="false" />
+          <Property Name="Document" Type="String" Nullable="false" />
+          <Property Name="DataBorn" Type="String" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" />
+          <Property Name="Eps" Type="String" Nullable="false" />
+          <Property Name="Gender" Type="String" Nullable="false" />
+          <Property Name="PersonExter" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="RelatedPersonPerson">
+          <End Type="Model1.RelatedPerson" Role="RelatedPerson" Multiplicity="1" />
+          <End Type="Model1.Person" Role="Person" Multiplicity="1" />
+        </Association>
+        <Association Name="RelatedPersonUser">
+          <End Type="Model1.RelatedPerson" Role="RelatedPerson" Multiplicity="1" />
+          <End Type="Model1.User" Role="User" Multiplicity="1" />
+        </Association>
+        <Association Name="UserRolUser">
+          <End Type="Model1.User" Role="User" Multiplicity="1" />
+          <End Type="Model1.RolUser" Role="RolUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RolUser">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserInfoDoctor">
+          <End Type="Model1.User" Role="User" Multiplicity="1" />
+          <End Type="Model1.InfoDoctor" Role="InfoDoctor" Multiplicity="1" />
+        </Association>
+        <Association Name="InfoDoctorschedule">
+          <End Type="Model1.InfoDoctor" Role="InfoDoctor" Multiplicity="1" />
+          <End Type="Model1.schedule" Role="schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InfoDoctor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="schedule">
+              <PropertyRef Name="InfoDoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Practiceschedule">
+          <End Type="Model1.schedule" Role="schedule" Multiplicity="*" />
+          <End Type="Model1.Practice" Role="Practice" Multiplicity="1" />
+        </Association>
+        <Association Name="PersonUser">
+          <End Type="Model1.Person" Role="Person" Multiplicity="1" />
+          <End Type="Model1.User" Role="User" Multiplicity="1" />
+        </Association>
+        <Association Name="UserCitation">
+          <End Type="Model1.User" Role="User" Multiplicity="1" />
+          <End Type="Model1.Citation" Role="Citation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Citation">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TypeCitationCitation">
+          <End Type="Model1.Citation" Role="Citation" Multiplicity="*" />
+          <End Type="Model1.TypeCitation" Role="TypeCitation" Multiplicity="1" />
+        </Association>
+        <Association Name="ModuleFormModule">
+          <End Type="Model1.Module" Role="Module" Multiplicity="1" />
+          <End Type="Model1.FormModule" Role="FormModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Module">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FormModule">
+              <PropertyRef Name="ModuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FormFormModule">
+          <End Type="Model1.FormModule" Role="FormModule" Multiplicity="*" />
+          <End Type="Model1.Form" Role="Form" Multiplicity="1" />
+        </Association>
+        <Association Name="permissionRolFormPermission">
+          <End Type="Model1.permission" Role="permission" Multiplicity="1" />
+          <End Type="Model1.RolFormPermission" Role="RolFormPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="permission">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RolFormPermission">
+              <PropertyRef Name="permissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CitationNotification">
+          <End Type="Model1.Citation" Role="Citation" Multiplicity="1" />
+          <End Type="Model1.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Citation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="CitationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RolRolUser">
+          <End Type="Model1.Rol" Role="Rol" Multiplicity="1" />
+          <End Type="Model1.RolUser" Role="RolUser" Multiplicity="*" />
+        </Association>
+        <Association Name="FormRolFormPermission">
+          <End Type="Model1.Form" Role="Form" Multiplicity="1" />
+          <End Type="Model1.RolFormPermission" Role="RolFormPermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Form">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RolFormPermission">
+              <PropertyRef Name="FormId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RolRolFormPermission">
+          <End Type="Model1.RolFormPermission" Role="RolFormPermission" Multiplicity="*" />
+          <End Type="Model1.Rol" Role="Rol" Multiplicity="1" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="Model1" />
+        <Alias Key="Target" Value="Model1.Store" />
+        <EntityContainerMapping CdmEntityContainer="Model1Container" StorageEntityContainer="Model1TargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
