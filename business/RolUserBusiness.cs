@@ -12,9 +12,9 @@ namespace Business
     public class RolUserBusiness
     {
         private readonly RolUserData _rolUserData;
-        private readonly ILogger _logger;
+        private readonly ILogger<RolUserBusiness> _logger;
 
-        public RolUserBusiness(RolUserData rolUserData, ILogger logger)
+        public RolUserBusiness(RolUserData rolUserData, ILogger<RolUserBusiness> logger)
         {
             _rolUserData = rolUserData;
             _logger = logger;
@@ -120,6 +120,37 @@ namespace Business
         public void GetAllRolUserPermission()
         {
             throw new NotImplementedException();
+        }      // Método para mapear de Rol a RolDTO
+        private RolUserDto MapToDTO(RolUser RolUser)
+        {
+            return new RolUserDto
+            {
+                Id = RolUser.Id,
+                Name = RolUser.Name,
+                Description = RolUser.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear de RolDTO a Rol
+        private RolUser MapToEntity(RolUserDto roluserDto)
+        {
+            return new RolUser
+            {
+                Id = roluserDto.Id,
+                Name = roluserDto.Name,
+                Description = roluserDto.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear una lista de Rol a una lista de RolDTO
+        private IEnumerable<RolUserDto> MapToDTOList(IEnumerable<RolUser> rolusers)
+        {
+            var RolUserDto = new List<RolUserDto>();
+            foreach (var roluser in rolusers)
+            {
+                RolUserDto.Add(MapToDTO(roluser));
+            }
+            return RolUserDto;
         }
     }
 }

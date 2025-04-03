@@ -13,9 +13,9 @@ namespace Business
     public class PermissionBusiness
     {
         private readonly PermissionData _permissionData;
-        private readonly ILogger _logger;
+        private readonly ILogger<PermissionBusiness> _logger;
 
-        public PermissionBusiness(PermissionData permissionData, ILogger logger)
+        public PermissionBusiness(PermissionData permissionData, ILogger<PermissionBusiness> logger)
         {
             _permissionData = permissionData;
             _logger = logger;
@@ -28,16 +28,8 @@ namespace Business
             {
                 var permission = await _permissionData.GetAllAsync();
                 var permissionDTO = new List<PermissionDto>();
+                var permissionDto = MapToDTOList(permission);
 
-                foreach (var Permission in permission)
-                {
-                    permissionDTO.Add(new PermissionDto
-                    {
-                        Id = permission.Id,
-                        Name = permission.Name,
-
-                    });
-                }
 
                 return permissionDTO;
             }
@@ -121,6 +113,37 @@ namespace Business
                 _logger.LogWarning("Se intentó crear/actualizar un rol con Name vacío");
                 throw new Utilities.Exceptions.ValidationException("Name", "El Name del rol es obligatorio");
             }
+        }        // Método para mapear de Rol a RolDTO
+        private PermissionDto MapToDTO(Permission Permission)
+        {
+            return new PermissionDto
+            {
+                Id = Permission.Id,
+                Name = Permission.Name,
+                Description = Permission.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear de RolDTO a Rol
+        private Permission MapToEntity(PermissionDto permissionDto)
+        {
+            return new Permission
+            {
+                Id = permissionDto.Id,
+                Name = permissionDto.Name,
+                Description = permissionDto.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear una lista de Rol a una lista de RolDTO
+        private IEnumerable<PermissionDto> MapToDTOList(IEnumerable<Permission> permissions)
+        {
+            var PermissionDto = new List<PermissionDto>();
+            foreach (var permission in permissions)
+            {
+                PermissionDto.Add(MapToDTO(permission));
+            }
+            return PermissionDto;
         }
     }
 }

@@ -14,9 +14,9 @@ namespace Business
     public class UserBusiness
     {
         private readonly UserData _userData;
-        private readonly ILogger _logger;
+        private readonly ILogger<UserBusiness> _logger;
 
-        public UserBusiness(UserData userData, ILogger logger)
+        public UserBusiness(UserData userData, ILogger<UserBusiness> logger)
         {
             _userData = userData;
             _logger = logger;
@@ -27,16 +27,7 @@ namespace Business
             try
             {
                 var user = await _userData.GetAllAsync();
-                var userDto = new List<UserDto>();
-
-                foreach (var User in user)
-                {
-                    userDto.Add(new UserDto
-                    {
-                        Id = user.Id,
-                        Name = user.Name
-                    });
-                }
+                var userDto = MapToDTOList(user);
                 return userDto;
             }
             catch (Exception ex)
@@ -93,7 +84,7 @@ namespace Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo usuario: {UsuarioNombre}", UserDto?.UserName ?? "null");
+                _logger.LogError(ex, "Error al crear nuevo usuario: {UsuarioNombre}");
                 throw new ExternalServiceException("Base de datos", "Error al crear el usuario", ex);
             }
         }
@@ -109,7 +100,7 @@ namespace Business
             {
                 throw new Utilities.Exceptions.ValidationException("El objeto rol no puede ser nulo");
             }
-            if (UserDto.UserId <= 0)
+            if (userDto.Id <= 0)
             {
                 _logger.LogWarning("Se intentó crear/actualizar un rol con UserId inválido");
                 throw new Utilities.Exceptions.ValidationException("UserId", "El UserId es obligatorio y debe ser mayor que cero");
@@ -123,6 +114,36 @@ namespace Business
         public void GetAllUserAsync()
         {
             throw new NotImplementedException();
+        }        // Método para mapear de Rol a RolDTO
+        private UserDto MapToDTO(User User)
+        {
+            return new UserDto
+            {
+                Id = User.Id,
+                Name = User.Name,
+                Description = User.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear de RolDTO a Rol
+        private User MapToEntity(UserDto userDto)
+        {
+            return new User
+            {
+                Id = userDto.Id,
+                Name = userDto.Name,
+                Description = userDto.Description // Si existe en la entidad
+            };
+        }
+
+        private IEnumerable<UserDto> MapToDTOList(IEnumerable<User> users)
+        {
+            var UserDto = new List<UserDto>();
+            foreach (var user in users)
+            {
+                UserDto.Add(MapToDTO(user));
+            }
+            return UserDto;
         }
     }
 }

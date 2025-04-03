@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Utilities.Exceptions;
 
 
-namespace Web.Controllers
+namespace Webs.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de permisos en el sistema
@@ -32,11 +32,7 @@ namespace Web.Controllers
             _logger = logger;
         }
 
-        public PermissionBusiness Get_PermissionBusiness()
-        {
-            return _PermissionBusiness;
-        }
-
+     
         /// <summary>
         /// Obtiene todos los permisos del sistema
         /// </summary>

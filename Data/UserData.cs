@@ -9,9 +9,9 @@ namespace Data
      public class UserData
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<UserData> _logger;
 
-        public UserData(ApplicationDbContext context, ILogger logger)
+        public UserData(ApplicationDbContext context, ILogger<UserData> logger)
         {
             _context = context; 
             _logger = logger;

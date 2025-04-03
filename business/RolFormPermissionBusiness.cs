@@ -14,9 +14,9 @@ namespace Business
     public class RolFormPermissionBusiness
     {
         private readonly RolFormPermissionData _rolFormPermissionData;
-        private readonly ILogger _logger;
+        private readonly ILogger<RolFormPermissionBusiness> _logger;
 
-        public RolFormPermissionBusiness(RolFormPermissionData rolFormPermissionData, ILogger logger)
+        public RolFormPermissionBusiness(RolFormPermissionData rolFormPermissionData, ILogger<RolFormPermissionBusiness> logger)
         {
             _rolFormPermissionData = rolFormPermissionData;
             _logger = logger;
@@ -33,7 +33,7 @@ namespace Business
                 {
                     permissionsDtoList.Add(new RolFormPermissionDto
                     {
-                        RolFormPermissionId = entity.Id,
+                        Id = entity.Id,
                         RolId = entity.RolId,
                         FormId = entity.FormId,
                         PermissionId = entity.PermissionId
@@ -66,7 +66,7 @@ namespace Business
 
                 return new RolFormPermissionDto
                 {
-                    RolFormPermissionId = permisoEntidad.Id,
+                    Id = permisoEntidad.Id,
                     RolId = permisoEntidad.RolId,
                     FormId = permisoEntidad.FormId,
                     PermissionId = permisoEntidad.PermissionId
@@ -96,7 +96,7 @@ namespace Business
 
                 return new RolFormPermissionDto
                 {
-                    RolFormPermissionId = permisoCreado.Id,
+                    Id = permisoCreado.Id,
                     RolId = permisoCreado.RolId,
                     FormId = permisoCreado.FormId,
                     PermissionId = permisoCreado.PermissionId
@@ -104,7 +104,7 @@ namespace Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo permiso: {RolFormPermissionId}", nuevoPermisoDto?.RolFormPermissionId ?? 0);
+                _logger.LogError(ex, "Error al crear nuevo permiso: {RolFormPermissionId}", nuevoPermisoDto?.Id ?? 0);
                 throw new ExternalServiceException("Base de datos", "Error al crear el permiso", ex);
             }
         }
@@ -130,11 +130,44 @@ namespace Business
                 _logger.LogWarning("Se intentó crear/actualizar un RolFormPermission con PermissionId inválido");
                 throw new ValidationException("PermissionId", "El PermissionId es obligatorio y debe ser mayor que cero");
             }
+          }        // Método para mapear de Rol a RolDTO
+        private RolFormPermissionDto MapToDTO(RolFormPermission RolFormPermission)
+        {
+            return new RolFormPermissionDto
+            {
+                Id = RolFormPermission.Id,
+                Name = RolFormPermission.Name,
+                Description = RolFormPermission.Description // Si existe en la entidad
+            };
         }
 
-        public void GetAllRolFormsPermission()
+        // Método para mapear de RolDTO a Rol
+        private RolFormPermission MapToEntity(RolFormPermissionDto rolformpermissionDto)
+        {
+            return new RolFormPermission
+            {
+                Id = rolformpermissionDto.Id,
+                Name = rolformpermissionDto.Name,
+                Description = rolformpermissionDto.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear una lista de Rol a una lista de RolDTO
+        private IEnumerable<RolFormPermissionDto> MapToDTOList(IEnumerable<RolFormPermission> rolformpermissions)
+        {
+            var RolFormPermissionDto = new List<RolFormPermissionDto>();
+            foreach (var rolformpermission in rolformpermissions)
+            {
+                RolFormPermissionDto.Add(MapToDTO(rolformpermission));
+            }
+            return RolFormPermissionDto;
+        }
+
+        public object GetAllRolFormsPermission()
         {
             throw new NotImplementedException();
         }
     }
 }
+
+

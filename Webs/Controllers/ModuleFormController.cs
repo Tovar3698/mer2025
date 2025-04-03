@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Utilities.Exceptions;
 
 
-namespace Web.Controllers
+namespace Webs.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de permisos en el sistema
@@ -44,7 +44,7 @@ namespace Web.Controllers
         {
             try
             {
-                var ModuleForm = await _ModuleFormBusiness.GetAllModuleFormAsync();
+                var ModuleForm = await _ModuleFormBusiness.GetAllModulesAsync();
                 return Ok(ModuleForm);
             }
             catch (ExternalServiceException ex)
@@ -72,7 +72,7 @@ namespace Web.Controllers
         {
             try
             {
-                var ModuleForm = await _ModuleFormBusiness.GetModuleFormByIdAsync(id);
+                var ModuleForm = await _ModuleFormBusiness.GetRolByIdAsync(id);
                 return Ok(ModuleForm);
             }
             catch (ValidationException ex)

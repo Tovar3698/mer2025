@@ -18,6 +18,5 @@ namespace Entity.Model
         //Dependencia para la tabla pivote ModuleForm
         public List<ModuleForm> ModuleForm { get; set; } = new List<ModuleForm>();
         public bool IsDeleted { get; set; }
-        public object Url { get; set; }
     }
 }

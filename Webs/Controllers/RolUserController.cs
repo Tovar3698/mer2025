@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Utilities.Exceptions;
 
 
-namespace Web.Controllers
+namespace Webs.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de permisos en el sistema
@@ -69,7 +69,7 @@ namespace Web.Controllers
         {
             try
             {
-                var RolUser = await _RolUserBusiness.GetRolUserByIdAsync(id);
+                var RolUser = await _RolUserBusiness.GetUserByIdAsync(id);
                 return Ok(RolUser);
             }
             catch (ValidationException ex)
@@ -85,6 +85,29 @@ namespace Web.Controllers
             catch (ExternalServiceException ex)
             {
                 _logger.LogError(ex, "Error al obtener permiso con ID: {RolId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+        [HttpPost]
+        [ProducesResponseType(typeof(RolUserDto), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CreateRolUser([FromBody] RolUserDto roluserDto)
+        {
+            try
+            {
+                var createRolUser = await _RolUserBusiness.CreateRolUserAsync(roluserDto);
+                return CreatedAtAction(nameof(GetRolUserById), new { id = createRolUser.Id }, createRolUser);
+
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "validacion fallida al cear Usuario");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al crear Usuario");
                 return StatusCode(500, new { message = ex.Message });
             }
         }

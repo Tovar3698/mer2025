@@ -13,9 +13,9 @@ namespace Business
     public class ModuleBusiness
     {
         private readonly ModuleData _moduleData;
-        private readonly ILogger _logger;
+        private readonly ILogger<ModuleBusiness> _logger;
 
-        public ModuleBusiness(ModuleData moduleData, ILogger logger)
+        public ModuleBusiness(ModuleData moduleData, ILogger<ModuleBusiness> logger)
         {
             _moduleData = moduleData;
             _logger = logger;
@@ -28,16 +28,8 @@ namespace Business
             {
                 var module = await _moduleData.GetAllAsync();
                 var ModuleDTO = new List<ModuleDto>();
+                var moduleDto = MapToDTOList(module);
 
-                foreach (var Module in module)
-                {
-                    ModuleDTO.Add(new ModuleDto
-                    {
-                        Id = module.Id,
-                        Name = module.Name,
-                        Description = module.Description // Si existe en la entidad
-                    });
-                }
 
                 return ModuleDTO;
             }
@@ -123,5 +115,38 @@ namespace Business
                 throw new Utilities.Exceptions.ValidationException("Name", "El Name del rol es obligatorio");
             }
         }
+        // Método para mapear de Rol a RolDTO
+        private ModuleDto MapToDTO(Module Module)
+        {
+            return new ModuleDto
+            {
+                Id = Module.Id,
+                Name = Module.Name,
+                Description = Module.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear de RolDTO a Rol
+        private Module MapToEntity(ModuleDto moduleDto)
+        {
+            return new Module
+            {
+                Id = moduleDto.Id,
+                Name = moduleDto.Name,
+                Description = moduleDto.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear una lista de Rol a una lista de RolDTO
+        private IEnumerable<ModuleDto> MapToDTOList(IEnumerable<Module> modules)
+        {
+            var ModuleDto = new List<ModuleDto>();
+            foreach (var module in modules)
+            {
+                ModuleDto.Add(MapToDTO(module));
+            }
+            return ModuleDto;
+        }
     }
 }
+

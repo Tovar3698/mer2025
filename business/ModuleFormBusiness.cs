@@ -13,33 +13,33 @@ namespace Business
     public class ModuleFormBusiness
     {
         private readonly ModuleFormData _moduleformData;
-        private readonly ILogger _logger;
+        private readonly ILogger<ModuleFormBusiness> _logger;
 
-        public ModuleFormBusiness(ModuleFormData moduleFormData, ILogger logger)
+        public ModuleFormBusiness(ModuleFormData moduleformData, ILogger<ModuleFormBusiness> logger)
         {
-            _moduleformData = moduleFormData;
+            _moduleformData = moduleformData;
             _logger = logger;
         }
 
         // Método para obtener todos los roles como DTOs
-        public async Task<IEnumerable<ModuleFormDto>> GetAllModuleFormAsync()
+        public async Task<IEnumerable<ModuleFormDto>> GetAllModulesAsync()
         {
             try
             {
-                var moduleForm = await _moduleformData.GetAllAsync();
-                var moduleFormDTO = new List<ModuleFormDto>();
+                var moduldorms = await _moduleformData.GetAllAsync();
+                var moduleformsDTO = new List<ModuleFormDto>();
 
-                foreach (var moduleform in moduleForm)
+                foreach (var moduleform in moduldorms)
                 {
-                    moduleFormDTO.Add(new ModuleFormDto
+                    moduleformsDTO.Add(new ModuleFormDto
                     {
-                        ModuleFormId = moduleform.Id,
-                        ModuleFormId = moduleform.Name,
-
+                        Id = moduleform.Id,
+                        Name = moduleform.Name,
+                        Description = moduleform.Description // Si existe en la entidad
                     });
                 }
 
-                return moduleFormDTO;
+                return moduleformsDTO;
             }
             catch (Exception ex)
             {
@@ -49,11 +49,11 @@ namespace Business
         }
 
         // Método para obtener un rol por ID como DTO
-        public async Task<ModuleDto> GetModuleFormByIdAsync(int id)
+        public async Task<ModuleFormDto> GetRolByIdAsync(int id)
         {
             if (id <= 0)
             {
-                _logger.LogWarning("Se intentó obtener un rol con ID inválido: {ModuleId}", id);
+                _logger.LogWarning("Se intentó obtener un rol con ID inválido: {RolId}", id);
                 throw new Utilities.Exceptions.ValidationException("id", "El ID del rol debe ser mayor que cero");
             }
 
@@ -63,52 +63,48 @@ namespace Business
                 if (moduleform == null)
                 {
                     _logger.LogInformation("No se encontró ningún rol con ID: {RolId}", id);
-                    throw new EntityNotFoundException("ModuleForm", id);
+                    throw new EntityNotFoundException("Rol", id);
                 }
 
                 return new ModuleFormDto
                 {
-                    ModuleFormId = moduleform.Id,
-                    ModuleFormName = moduleform.name,
-
+                    Id = moduleform.Id,
+                    Name = moduleform.Name,
+                    Description = moduleform.Description
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener el rol con ID: {ModuleId}", id);
+                _logger.LogError(ex, "Error al obtener el rol con ID: {RolId}", id);
                 throw new ExternalServiceException("Base de datos", $"Error al recuperar el rol con ID {id}", ex);
             }
         }
 
-        public ModuleForm GetModuleForm()
-        {
-            return ModuleForm;
-        }
-
         // Método para crear un rol desde un DTO
-        public async Task<ModuleFormDto> CreateModuleFormAsync(ModuleFormDto ModuleFormDto, ModuleForm moduleForm)
+        public async Task<ModuleFormDto> CreateModuleFormAsync(ModuleFormDto ModuleFormDto)
         {
             try
             {
                 ValidateModuleForm(ModuleFormDto);
 
-                var module = new Rol
+                var moduleform = new ModuleForm
                 {
-                    Name = ModuleFormDto.ModuleFormName,
-
+                    Name = ModuleFormDto.Name,
+                    Description = ModuleFormDto.Description // Si existe en la entidad
                 };
 
-                var moduleformCreado = await _moduleformData.CreateAsync(moduleForm);
+                var moduleformCreado = await _moduleformData.CreateAsync(moduleform);
 
                 return new ModuleFormDto
                 {
-                    ModuleFormId = moduleformCreado.Id,
-                    ModuleFormId = moduleformCreado.Name,
+                    Id = moduleformCreado.Id,
+                    Name = moduleformCreado.Name,
+                    Description = moduleformCreado.Description // Si existe en la entidad
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo rol: {RolNombre}", ModuleFormDto?.ModuleFormName ?? "null");
+                _logger.LogError(ex, "Error al crear nuevo rol: {RolNombre}", ModuleFormDto?.Name ?? "null");
                 throw new ExternalServiceException("Base de datos", "Error al crear el rol", ex);
             }
         }
@@ -121,11 +117,49 @@ namespace Business
                 throw new Utilities.Exceptions.ValidationException("El objeto rol no puede ser nulo");
             }
 
-            if (string.IsNullOrWhiteSpace(ModuleFormDto.ModuleFormName))
+            if (string.IsNullOrWhiteSpace(ModuleFormDto.Name))
             {
                 _logger.LogWarning("Se intentó crear/actualizar un rol con Name vacío");
                 throw new Utilities.Exceptions.ValidationException("Name", "El Name del rol es obligatorio");
             }
+        }
+
+        // Método para mapear de Rol a RolDTO
+        private ModuleFormDto MapToDTO(ModuleForm moduleForm)
+        {
+            return new ModuleFormDto
+            {
+                Id = moduleForm.Id,
+                Name = moduleForm.Name,
+                Description = moduleForm.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear de RolDTO a Rol
+        private ModuleForm MapToEntity(ModuleFormDto moduleformDto)
+        {
+            return new ModuleForm
+            {
+                Id = moduleformDto.Id,
+                Name = moduleformDto.Name,
+                Description = moduleformDto.Description // Si existe en la entidad
+            };
+        }
+
+        // Método para mapear una lista de Rol a una lista de RolDTO
+        private IEnumerable<ModuleFormDto> MapToDTOList(IEnumerable<ModuleForm> moduleforms)
+        {
+            var moduleformsDto = new List<ModuleFormDto>();
+            foreach (var moduleForm in moduleforms)
+            {
+                moduleformsDto.Add(MapToDTO(moduleForm));
+            }
+            return moduleformsDto;
+        }
+
+        public async Task GetAllModulesAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

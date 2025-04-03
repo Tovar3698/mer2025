@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Utilities.Exceptions;
 
 
-namespace Web.Controllers
+namespace Webs.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de permisos en el sistema

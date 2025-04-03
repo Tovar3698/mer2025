@@ -45,18 +45,18 @@ namespace Data
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener rol con ID {RolId}", id);
+                _logger.LogError(ex, "Error al obtener rol con ID {PersonId}", id);
                 throw; //Re-lanza la excepcion para sea manejada en capas superiores
             }
         }
         /// <summary>
         /// Crea un nuevo rol en la base de datos
         /// </summary>
-        /// <param name="rol"></param>
+        /// <param name="Rol"></param>
         /// <returns>el rol creado.</returns>
         /// 
         public async Task<Rol> CreateAsync(Rol rol)
-        { 
+        {
             try
             {
                 await _context.Set<Rol>().AddAsync(rol);
@@ -105,11 +105,6 @@ namespace Data
                 Console.WriteLine($"Error al eliminar rol: {ex.Message}");
                 return false;
             }
-        }
-
-        public void Create(RolUser rolsuser)
-        {
-            throw new NotImplementedException();
         }
     }
 }

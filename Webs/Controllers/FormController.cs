@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Utilities.Exceptions;
 
 
-namespace Web.Controllers
+namespace Webs.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de permisos en el sistema
@@ -41,7 +41,7 @@ namespace Web.Controllers
         {
             try
             {
-                var form = await _FormBusiness.GetAllFormsAsync();
+                var form = await _FormBusiness.GetAllForm();
                 return Ok(form);
             }
             catch (ExternalServiceException ex)

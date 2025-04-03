@@ -1,0 +1,148 @@
+﻿CREATE TABLE Person (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    FirstName NVARCHAR(100) NOT NULL,
+    LastName NVARCHAR(100) NOT NULL,
+    Document_Type NVARCHAR(50) NOT NULL,
+    Document NVARCHAR(50) NOT NULL UNIQUE,
+    DateBorn DATE NOT NULL,
+    PhoneNumber NVARCHAR(20),
+    Eps NVARCHAR(100),
+    Gender NVARCHAR(10),
+    PersonEx TEXT
+);
+
+CREATE TABLE RelatedPerson (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT NOT NULL,
+    TypeRelation NVARCHAR(50),
+    Description TEXT,
+    PersonId INT NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES User(Id),
+    FOREIGN KEY (PersonId) REFERENCES Person(Id)
+);
+
+CREATE TABLE User (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Email NVARCHAR(255) UNIQUE NOT NULL,
+    Password NVARCHAR(255) NOT NULL,
+    AccountStatus NVARCHAR(50),
+    RegistrationData DATETIME NOT NULL
+);
+
+CREATE TABLE RolUser (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT NOT NULL,
+    RolId INT NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES User(Id),
+    FOREIGN KEY (RolId) REFERENCES Rol(Id)
+);
+
+CREATE TABLE Rol (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Description TEXT
+);
+
+CREATE TABLE RolFormPermission (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    PermissionId INT NOT NULL,
+    FormId INT NOT NULL,
+    ModuleFormId INT NOT NULL,
+    RolId INT NOT NULL,
+    FOREIGN KEY (PermissionId) REFERENCES Permission(Id),
+    FOREIGN KEY (FormId) REFERENCES Form(Id),
+    FOREIGN KEY (ModuleFormId) REFERENCES FormModule(Id),
+    FOREIGN KEY (RolId) REFERENCES Rol(Id)
+);
+
+CREATE TABLE Permission (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Description TEXT
+);
+
+CREATE TABLE Form (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Description TEXT
+);
+
+CREATE TABLE FormModule (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    ModuleId INT NOT NULL,
+    FormId INT NOT NULL,
+    FOREIGN KEY (ModuleId) REFERENCES Module(Id),
+    FOREIGN KEY (FormId) REFERENCES Form(Id)
+);
+
+CREATE TABLE Module (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Description TEXT
+);
+
+CREATE TABLE Notification (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Message TEXT NOT NULL,
+    DateAssignment DATETIME NOT NULL,
+    StateNotification NVARCHAR(50) NOT NULL,
+    TypeNotification NVARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Citation (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UserId INT NOT NULL,
+    TypeCitationId INT NOT NULL,
+    NotificationId INT NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES User(Id),
+    FOREIGN KEY (TypeCitationId) REFERENCES TypeCitation(Id),
+    FOREIGN KEY (NotificationId) REFERENCES Notification(Id)
+);
+
+CREATE TABLE TypeCitation (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Description TEXT,
+    Frequency NVARCHAR(50),
+    TotalDuration INT,
+    PropertyS TEXT
+);
+
+CREATE TABLE InfoDoctor (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Specialty NVARCHAR(100) NOT NULL,
+    RegistrationData NVARCHAR(100) NOT NULL,
+    UserId INT NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES User(Id)
+);
+
+CREATE TABLE Schedule (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    InfoDoctorId INT NOT NULL,
+    StartTime DATETIME NOT NULL,
+    EndTime DATETIME NOT NULL,
+    CreationDate DATETIME NOT NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    FOREIGN KEY (InfoDoctorId) REFERENCES InfoDoctor(Id)
+);
+
+CREATE TABLE Practice (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Description TEXT,
+    IsDeleted BIT NOT NULL DEFAULT 0,
+    CreationDate DATETIME NOT NULL
+);
+
+CREATE TABLE AuditLog (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    TableName NVARCHAR(100) NOT NULL,
+    AffectedId INT NOT NULL,
+    PropertyName NVARCHAR(100) NOT NULL,
+    OldValue NVARCHAR(255),
+    NewValue NVARCHAR(255),
+    Action NVARCHAR(50) NOT NULL,
+    Timestamp DATETIME NOT NULL DEFAULT GETDATE(),
+    UserId INT NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES User(Id)
+);

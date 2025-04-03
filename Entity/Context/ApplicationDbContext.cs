@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Entity.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +19,6 @@ namespace Entity.Contexts
         /// </summary>
         protected readonly IConfiguration _configuration;
 
-        public object Form { get; set; }
 
         /// <summary>
         /// Constructor del contexto de la base de datos.
@@ -30,6 +30,9 @@ namespace Entity.Contexts
         {
             _configuration = configuration;
         }
+
+        public DbSet<User> User { get; set; }
+
 
         /// <summary>
         /// Configura los modelos de la base de datos aplicando configuraciones desde ensamblados.

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Utilities.Exceptions;
 
 
-namespace Web.Controllers
+namespace Webs.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de permisos en el sistema
@@ -92,6 +92,29 @@ namespace Web.Controllers
             catch (ExternalServiceException ex)
             {
                 _logger.LogError(ex, "Error al obtener permiso con ID: {RolId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+        [HttpPost]
+        [ProducesResponseType(typeof(UserDto), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CreateRolFormPermission([FromBody] RolFormPermissionDto rolformpermissionDto)
+        {
+            try
+            {
+                var createRolFormPermission = await _RolFormPermissionBusiness.CreateRolFormPermissionAsync(rolformpermissionDto);
+                return CreatedAtAction(nameof(GetRolFormPermissionById), new { id = createRolFormPermission.Id }, createRolFormPermission);
+
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "validacion fallida al cear Usuario");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al crear Usuario");
                 return StatusCode(500, new { message = ex.Message });
             }
         }

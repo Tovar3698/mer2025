@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Utilities.Exceptions;
 
 
-namespace Web.Controllers
+namespace Webs.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de permisos en el sistema
@@ -30,12 +30,7 @@ namespace Web.Controllers
             _UserBusiness = UserBusiness;
             _logger = logger;
         }
-
-        public UserBusiness Get_UserBusiness()
-        {
-            return _UserBusiness;
-        }
-
+       
         /// <summary>
         /// Obtiene todos los permisos del sistema
         /// </summary>
@@ -45,11 +40,11 @@ namespace Web.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<UserDto>), 200)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetAllUser(UserBusiness _UserBusiness)
+        public async Task<IActionResult> GetAllUser()
         {
             try
             {
-                var User = await _UserBusiness.GetAllUserAsync();
+                var User = await _UserBusiness.GetAllUser();
                 return Ok(User);
             }
             catch (ExternalServiceException ex)
@@ -96,6 +91,30 @@ namespace Web.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [HttpPost]
+        [ProducesResponseType(typeof(UserDto), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CreateUser([FromBody] UserDto userDto)
+        {
+            try
+            {
+                var createUser = await _UserBusiness.CreateUserAsync(userDto);
+                return CreatedAtAction(nameof(GetUserById), new { id = createUser.Id }, createUser);
+                
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "validacion fallida al cear Usuario");
+                return BadRequest( new { message = ex.Message });
+            }
+            catch(ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al crear Usuario");
+                return StatusCode(500, new { message = ex.Message });
+            }
+        } 
+
     }
 }
 

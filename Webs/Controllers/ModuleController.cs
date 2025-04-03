@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Utilities.Exceptions;
 
 
-namespace Web.Controllers
+namespace Webs.Controllers
 {
     /// <summary>
     /// Controlador para la gestión de permisos en el sistema
