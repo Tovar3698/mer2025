@@ -91,6 +91,29 @@ namespace Web.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [HttpPost]
+        [ProducesResponseType(typeof(PersonDto), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CreateUser([FromBody] PersonDto personDto)
+        {
+            try
+            {
+                var createPerson = await _PersonBusiness.CreatePersonAsync(personDto);
+                return CreatedAtAction(nameof(GetPersonById), new { id = createPerson.Id }, createPerson);
+
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "validacion fallida al cear Usuario");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al crear Usuario");
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }
 

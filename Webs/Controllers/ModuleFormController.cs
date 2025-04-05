@@ -91,6 +91,29 @@ namespace Webs.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [HttpPost]
+        [ProducesResponseType(typeof(ModuleFormDto), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CreateModuleForm([FromBody] ModuleFormDto moduleformDto)
+        {
+            try
+            {
+                var createModuleForm = await _ModuleFormBusiness.CreateModuleFormAsync(moduleformDto);
+                return CreatedAtAction(nameof(GetModuleFormById), new { id = createModuleForm.Id }, createModuleForm);
+
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "validacion fallida al cear Usuario");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al crear Usuario");
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }
 

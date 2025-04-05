@@ -84,7 +84,10 @@ namespace Business
             }
             catch (Exception ex)
             {
+
                 _logger.LogError(ex, "Error al crear nuevo usuario: {UsuarioNombre}");
+
+                _logger.LogError(ex, "Error al crear nuevo usuario: {UsuarioNombre}", UserDto?.Id);
                 throw new ExternalServiceException("Base de datos", "Error al crear el usuario", ex);
             }
         }

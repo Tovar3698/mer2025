@@ -97,7 +97,10 @@ namespace Business
 
                 return new RolDto
                 {
+
                     Id = rolCreado.Id,
+
+
                     Name = rolCreado.Name,
                     Description = rolCreado.Description // Si existe en la entidad
                 };

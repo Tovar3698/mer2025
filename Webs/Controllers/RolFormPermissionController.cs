@@ -31,10 +31,6 @@ namespace Webs.Controllers
             _logger = logger;
         }
 
-        public RolFormPermissionBusiness RolFormBusiness => _RolFormPermissionBusiness;
-
-        public RolFormPermissionBusiness RolFormPermissionBusiness => _RolFormPermissionBusiness;
-
         /// <summary>
         /// Obtiene todos los permisos del sistema
         /// </summary>
@@ -96,15 +92,15 @@ namespace Webs.Controllers
             }
         }
         [HttpPost]
-        [ProducesResponseType(typeof(UserDto), 201)]
+        [ProducesResponseType(typeof(RolFormPermissionDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateRolFormPermission([FromBody] RolFormPermissionDto rolformpermissionDto)
+        public async Task<IActionResult> CreateUser([FromBody] RolFormPermissionDto rolformpermissionDto)
         {
             try
             {
                 var createRolFormPermission = await _RolFormPermissionBusiness.CreateRolFormPermissionAsync(rolformpermissionDto);
-                return CreatedAtAction(nameof(GetRolFormPermissionById), new { id = createRolFormPermission.Id }, createRolFormPermission);
+                return CreatedAtAction(nameof(GetFormById), new { id = createRolFormPermission.Id }, createRolFormPermission);
 
             }
             catch (ValidationException ex)

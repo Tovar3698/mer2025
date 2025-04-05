@@ -93,6 +93,29 @@ namespace Webs.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [HttpPost]
+        [ProducesResponseType(typeof(PermissionDto), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CreatePermission([FromBody] PermissionDto permissionDto)
+        {
+            try
+            {
+                var createPermission = await _PermissionBusiness.CreatePermissionAsync(permissionDto);
+                return CreatedAtAction(nameof(GetPermissionById), new { id = createPermission.Id }, createPermission);
+
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "validacion fallida al cear Usuario");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al crear Usuario");
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }
 

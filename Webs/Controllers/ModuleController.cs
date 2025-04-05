@@ -88,6 +88,29 @@ namespace Webs.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [HttpPost]
+        [ProducesResponseType(typeof(ModuleDto), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> CreateUser([FromBody] ModuleDto moduleDto)
+        {
+            try
+            {
+                var createModule = await _ModuleBusiness.CreateModuleAsync(moduleDto);
+                return CreatedAtAction(nameof(GetModuleById), new { id = createModule.Id }, createModule);
+
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "validacion fallida al cear Usuario");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al crear Usuario");
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }
 

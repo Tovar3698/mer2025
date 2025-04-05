@@ -91,6 +91,29 @@ namespace Webs.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [HttpPost]
+        [ProducesResponseType(typeof(RolDto), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> RolUser([FromBody] RolDto rolDto)
+        {
+            try
+            {
+                var createRol = await _RolBusiness.CreateRolAsync(rolDto);
+                return CreatedAtAction(nameof(GetRolById), new { id = createRol.Id }, createRol);
+
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "validacion fallida al cear Usuario");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al crear Usuario");
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }
 
