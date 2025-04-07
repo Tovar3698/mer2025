@@ -8,38 +8,38 @@ using Utilities.Exceptions;
 
 namespace Business
 {
-    public class PersonBusiness
+    public class PracticeBusiness
     {
-        private readonly PersonData _personData;
-        private readonly ILogger<PersonBusiness> _logger;
+        private readonly PracticeData _practiceData;
+        private readonly ILogger<PracticeBusiness> _logger;
 
-        public PersonBusiness(PersonData personData, ILogger<PersonBusiness> logger)
+        public PracticeBusiness(PracticeData practiceData, ILogger<PracticeBusiness> logger)
         {
-            _personData = personData;
+            _practiceData = practiceData;
             _logger = logger;
         }
 
         // Método para obtener todos los roles como DTOs
-        public async Task<IEnumerable<PersonDto>> GetAllPerson()
+        public async Task<IEnumerable<PracticeDto>> GetAllPerson()
         {
             try
             {
-                var persons = await _personData.GetAllAsync();
-                var personDto = new List<PersonDto>();
+                var practices = await _practiceData.GetAllAsync();
+                var practiceDto = new List<PracticeDto>();
 
-                foreach (var person in persons)
+                foreach (var practice in practices)
                 {
-                    personDto.Add(new PersonDto
+                    practiceDto.Add(new PracticeDto
                     {
-                        Id = person.Id,
-                        Name = person.Name,
-                        Description = person.Description,
+                        Id = practice.Id,
+                        Name = practice.Name,
+                        Description = practice.Description,
 
 
                     });
                 }
 
-                return personDto;
+                return practiceDto;
             }
             catch (Exception ex)
             {
@@ -49,7 +49,7 @@ namespace Business
         }
 
         // Método para obtener un rol por ID como DTO
-        public async Task<PersonDto> GetPersonByIdAsync(int id)
+        public async Task<PracticeDto> GetPersonByIdAsync(int id)
         {
             if (id <= 0)
             {
@@ -59,18 +59,18 @@ namespace Business
 
             try
             {
-                var person = await _personData.GetByIdAsync(id);
-                if (person == null)
+                var practice = await _practiceData.GetByIdAsync(id);
+                if (practice == null)
                 {
                     _logger.LogInformation("No se encontró ningún formulario con ID: {FormId}", id);
                     throw new EntityNotFoundException("Formulario", id);
                 }
 
-                return new PersonDto
+                return new PracticeDto
                 {
-                    Id = person.Id,
-                    Name = person.Name,
-                    Description = person.Description
+                    Id = practice.Id,
+                    Name = practice.Name,
+                    Description = practice.Description
 
                 };
             }
@@ -82,21 +82,21 @@ namespace Business
         }
 
         // Método para crear un formulario desde un DTO
-        public async Task<PersonDto> CreatePersonAsync(PersonDto PersonDto)
+        public async Task<PracticeDto> CreatePracticeAsync(PracticeDto PracticeDto)
         {
             try
             {
-                ValidatePerson(PersonDto);
+                ValidatePractice(PracticeDto);
 
-                var person = new Person
+                var practice = new Practice
                 {
-                    Name = PersonDto.Name,
-                    Description = PersonDto.Description // Se agregó la descripción
+                    Name = PracticeDto.Name,
+                    Description = PracticeDto.Description // Se agregó la descripción
                 };
 
-                var personCreado = await _personData.CreateAsync(person);
+                var personCreado = await _practiceData.CreateAsync(practice);
 
-                return new PersonDto
+                return new PracticeDto
                 {
                     Id = personCreado.Id,
                     Name = personCreado.Name,
@@ -105,20 +105,20 @@ namespace Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo formulario: {FormName}", PersonDto?.Name ?? "null");
+                _logger.LogError(ex, "Error al crear nuevo formulario: {FormName}", PracticeDto?.Name ?? "null");
                 throw new ExternalServiceException("Base de datos", "Error al crear el formulario", ex);
             }
         }
 
         // Método para validar el DTO
-        private void ValidatePerson(PersonDto PersonDto)
+        private void ValidatePractice(PracticeDto PracticeDto)
         {
-            if (PersonDto == null)
+            if (PracticeDto == null)
             {
                 throw new Utilities.Exceptions.ValidationException("El objeto formulario no puede ser nulo");
             }
 
-            if (string.IsNullOrWhiteSpace(PersonDto.Name))
+            if (string.IsNullOrWhiteSpace(PracticeDto.Name))
             {
                 _logger.LogWarning("Se intentó crear/actualizar un formulario con Name vacío");
                 throw new Utilities.Exceptions.ValidationException("Name", "El Name del formulario es obligatorio");
@@ -126,36 +126,36 @@ namespace Business
         }
 
         // Método para mapear de Rol a RolDTO
-        private PersonDto MapToDTO(Person Person)
+        private PracticeDto MapToDTO(Practice Practice)
         {
-            return new PersonDto
+            return new PracticeDto
             {
-                Id = Person.Id,
-                Name = Person.Name,
-                Description = Person.Description // Si existe en la entidad
+                Id = Practice.Id,
+                Name = Practice.Name,
+                Description = Practice.Description // Si existe en la entidad
             };
         }
 
         // Método para mapear de RolDTO a Rol
-        private Person MapToEntity(PersonDto personDto)
+        private Practice MapToEntity(PracticeDto practiceDto)
         {
-            return new Person
+            return new Practice
             {
-                Id = personDto.Id,
-                Name = personDto.Name,
-                Description = personDto.Description // Si existe en la entidad
+                Id = practiceDto.Id,
+                Name = practiceDto.Name,
+                Description = practiceDto.Description // Si existe en la entidad
             };
         }
 
         // Método para mapear una lista de Rol a una lista de RolDTO
-        private IEnumerable<PersonDto> MapToDTOList(IEnumerable<Person> persons)
+        private IEnumerable<PracticeDto> MapToDTOList(IEnumerable<Practice> practices)
         {
-            var PersonDto = new List<PersonDto>();
-            foreach (var person in persons)
+            var PracticeDto = new List<PracticeDto>();
+            foreach (var practice in practices)
             {
-                PersonDto.Add(MapToDTO(person));
+                PracticeDto.Add(MapToDTO(practice));
             }
-            return PersonDto;
+            return PracticeDto;
         }
     }
 }

@@ -10,7 +10,9 @@ namespace Entity.Model
         public DateTime DateShipment { get; set; }
         public string StateNotification { get; set; }
         public string TypeNotification { get; set; }
-        public int CitationId1 { get; set; } 
+        public int CitationId1 { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
     }
 }

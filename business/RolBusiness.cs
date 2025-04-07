@@ -157,5 +157,20 @@ namespace Business
             }
             return rolesDto;
         }
+
+        public async Task DeleteLogicalRolAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateRolAsync(RolDto rolDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateRol(RolDto rolDto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

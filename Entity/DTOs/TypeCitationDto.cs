@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 
 namespace Entity.DTOs
 {
-    public class RolDto
+    public class TypeCitationDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string UserId { get; set; }
-        public string? Active { get; set; }
-        public int RolId { get; set; }
-        public string RolName { get; set; }
-        public bool State { get; set; }
 
     }
 }

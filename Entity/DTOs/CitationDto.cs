@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Entity.Model
+namespace Entity.DTOs
 {
-    public class Citation
+    public class CitationDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -17,7 +20,5 @@ namespace Entity.Model
         public bool IsControl { get; set; }
         public int ControlId { get; set; }
         public int UserId1 { get; set; } // Relación secundaria
-
-    
     }
 }
