@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Entity.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entity.Model
+namespace Entity.DTOs
 {
-    public class RelatedPerson
+    public class RelatedPersonDto
     {
         public int Id { get; set; }
         public int UserId { get; set; }
